@@ -45,9 +45,9 @@ class ProductCategory(BaseModel):
     def __str__(self):
         return self.description    
 
-class OnSaleInicator(BaseModel):
+class OnSaleIndicator(BaseModel):
     discount_value= models.SmallIntegerField(default = 0)
-    category_product = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, verbose_name='On Sale Inicator')
+    category_product = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, verbose_name='On Sale Indicator')
     historical= HistoricalRecords()
     
     @property 
@@ -65,4 +65,23 @@ class OnSaleInicator(BaseModel):
     def __str__(self):
        return f'Discount{self.category_product}:{self.discount_value}%'     
 
-    
+class Product(BaseModel):
+    name = models.CharField('Product Name', max_length=150, blank=False, null=False, unique=True)
+    description = models.TextField('Product Description', blank=False, null=False, unique=True)
+    image = models.ImageField('Product Image', upload_to='products/', blank=True, null=True)
+    historical= HistoricalRecords()
+
+    @property 
+    def _history_user(self):
+        return self.changed_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value   
+
+    class Meta:
+      verbose_name='Product'  
+      verbose_name_plural='Products' 
+
+    def __str__(self):
+        self.name
