@@ -20,4 +20,5 @@ class MeasureUnit(BaseModel):
         verbose_name_plural='MeasureUnits'  
 
     def __str__(self):
-        pass    
+        return self.description    
+        
