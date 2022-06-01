@@ -27,7 +27,6 @@ class MeasureUnit(BaseModel):
 
 class ProductCategory(BaseModel):
     description = models.CharField('Description',max_length=50, blank=False, null=False, unique=True)
-    measure_unit = models.ForeignKey(MeasureUnit, on_delete=models.CASCADE, verbose_name='Measure Unit')
     historical= HistoricalRecords()
 
     @property 
@@ -68,6 +67,8 @@ class OnSaleIndicator(BaseModel):
 class Product(BaseModel):
     name = models.CharField('Product Name', max_length=150, blank=False, null=False, unique=True)
     description = models.TextField('Product Description', blank=False, null=False, unique=True)
+    measure_unit = models.ForeignKey(MeasureUnit, on_delete=models.CASCADE, verbose_name='Measure Unit', default=1)
+    category_product = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, verbose_name='Product Category', null= True, default=1)
     image = models.ImageField('Product Image', upload_to='products/', blank=True, null=True)
     historical= HistoricalRecords()
 

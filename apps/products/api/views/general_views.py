@@ -1,27 +1,17 @@
-from django.shortcuts import render
-from rest_framework import generics
-
-from apps.products.models import ProductCategory, MeasureUnit, OnSaleIndicator
+from apps.base.api import GeneralListApiView
 from apps.products.api.serializers.general_serializers import MeasureUnitSerializer, OnSaleIndicatorSerializer, ProductCategorySerializer
 
 # Create your views here.
 
-class MeasureUnitListAPIView(generics.ListAPIView):
+class MeasureUnitListAPIView(GeneralListApiView):
     serializer_class = MeasureUnitSerializer
 
-    def get_queryset(self):
-        return MeasureUnit.objects.filter(active=True)
-
-
-class IndicatorListAPIView(generics.ListAPIView):
+  
+class IndicatorListAPIView(GeneralListApiView):
     serializer_class = OnSaleIndicatorSerializer
 
-    def get_queryset(self):
-        return OnSaleIndicator.objects.filter(active=True)
 
-
-class ProductCategoryListAPIView(generics.ListAPIView):
+class ProductCategoryListAPIView(GeneralListApiView):
     serializer_class = ProductCategorySerializer
 
-    def get_queryset(self):
-        return ProductCategory.objects.filter(active=True)        
+     
