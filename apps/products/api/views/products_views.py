@@ -20,12 +20,39 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProductRetrieveAPIView(generics.RetrieveAPIView):
+class ProductRetrieveUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
 
-    def get_queryset(self):
-        return self.get_serializer().Meta.model.objects.filter(active = True)
+    def get_queryset(self, pk=None):
+        if type(pk) == str:
+            return('Please Enter a Valid Id')    
+        if pk is None:
+            return self.get_serializer().Meta.model.objects.filter(active = True)
+        else:
+            return self.get_serializer().Meta.model.objects.filter(id = pk, active = True).first()    
 
+    def patch(self, request, pk=None):
+        if self.get_queryset(pk):
+            product_serializer = self.serializer_class(self.get_queryset(pk))
+            return Response(product_serializer.data, status =status.HTTP_200_OK)
+        Response({'error': "Product not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request, pk=None):
+        if self.get_queryset(pk):
+            product_serializer = self.serializer_class(self.get_queryset(pk), data=request.data)
+            if product_serializer.is_valid():
+                product_serializer.save()
+                return Response(product_serializer.data, status=status.HTTP_200_OK)
+            return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        Response({'error': "Product not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk=None):
+        product = self.get_queryset().filter(id=pk).first()    
+        if product:
+            product.active = False
+            product.save()
+            return Response({'message': 'Product has been deleted'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Product Not Found, Please Try a diferent id'}, status=status.HTTP_404_NOT_FOUND)
 
 class ProductDestroyAPIView(generics.DestroyAPIView):
     serializer_class = ProductSerializer
@@ -40,25 +67,3 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
             product.save()
             return Response({'message': 'Product has been deleted'}, status=status.HTTP_204_NO_CONTENT)
         return Response({'message': 'Product Not Found, Please Try a diferent id'}, status=status.HTTP_404_NOT_FOUND)
-
-
-class ProductUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = ProductSerializer
-
-    def get_queryset(self, pk):
-        return self.get_serializer().Meta.model.objects.filter(active = True).filter(id=pk).first()
-
-    def patch(self, request, pk=None):
-        if self.get_queryset(pk):
-            product_serializer = self.serializer_class(self.queryset(pk))
-            return Response(product_serializer.data, status =status.HTTP_200_OK)
-        Response({'error': "Product not found"}, status=status.HTTP_400_BAD_REQUEST)
-
-    def update(self, request, pk=None):
-        if self.get_queryset(pk):
-            product_serializer = self.serializer_class(self.get_queryset(pk), data=request.data)
-            if product_serializer.is_valid():
-                product_serializer.save()
-                return Response(product_serializer.data, status=status.HTTP_200_OK)
-            return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        Response({'error': "Product not found"}, status=status.HTTP_400_BAD_REQUEST)   
