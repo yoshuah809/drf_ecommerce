@@ -8,10 +8,7 @@ from apps.products.api.serializers.product_serializers import ProductSerializer
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     
-
     def get_queryset(self, pk=None):
-        if type(pk) == str:
-            return Response('Please Enter a Valid Id')    
         if pk is None:
             return self.get_serializer().Meta.model.objects.filter(active = True)
         else:
@@ -29,7 +26,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        print('hola desde put')
         if self.get_queryset(pk):
             product_serializer = self.serializer_class(self.get_queryset(pk), data=request.data)
             if product_serializer.is_valid():
@@ -39,7 +35,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         Response({'error': "Product not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    def delete(self, request, pk=None):
+    def destroy(self, request, pk=None):
         product = self.get_queryset().filter(id=pk).first()    
         if product:
             product.active = False
