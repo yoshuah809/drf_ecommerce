@@ -5,7 +5,7 @@ from apps.products.api.serializers.general_serializers import MeasureUnitSeriali
 
 # Create your views here.
 
-class MeasureUnitListCreateAPIView(viewsets.ModelViewSet):
+class MeasureUnitViewsets(viewsets.ModelViewSet):
     serializer_class = MeasureUnitSerializer
     
     def get_queryset(self, pk=None):
@@ -15,7 +15,7 @@ class MeasureUnitListCreateAPIView(viewsets.ModelViewSet):
             return self.get_serializer().Meta.model.objects.filter(id = pk, active = True).first()  
 
   
-class IndicatorListAPIView(viewsets.ModelViewSet):
+class IndicatorViewsets(viewsets.ModelViewSet):
     serializer_class = OnSaleIndicatorSerializer
 
     def get_queryset(self, pk=None):
@@ -24,7 +24,7 @@ class IndicatorListAPIView(viewsets.ModelViewSet):
         else:
             return self.get_serializer().Meta.model.objects.filter(id = pk, active = True).first()  
 
-class ProductCategoryListCreateAPIView(viewsets.ModelViewSet):
+class ProductCategoryViewsets(viewsets.ModelViewSet):
     serializer_class = ProductCategorySerializer
    
     def get_queryset(self, pk=None):

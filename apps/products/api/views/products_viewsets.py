@@ -6,6 +6,9 @@ from apps.products.api.serializers.product_serializers import ProductSerializer
 
 #ViewSets Implementation
 class ProductViewSet(viewsets.ModelViewSet):
+    """
+    Product End Point
+    """
     serializer_class = ProductSerializer
     
     def get_queryset(self, pk=None):
@@ -15,8 +18,16 @@ class ProductViewSet(viewsets.ModelViewSet):
             return self.get_serializer().Meta.model.objects.filter(id = pk, active = True).first()  
     
     def list(self, request):
+        """
+        Product End Point to List all Products-2
+                
+
+        Params--->
+        No parameters needed
+        """ 
         product_serializer = self.get_serializer(self.get_queryset(), many = True)
         return Response(product_serializer.data, status=status.HTTP_200_OK)
+   
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)

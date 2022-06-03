@@ -37,10 +37,18 @@ LOCAL_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'simple_history',
+    'drf_yasg',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION':{
+        'basic':{
+            'type':'basic'
+        }
+    }
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
