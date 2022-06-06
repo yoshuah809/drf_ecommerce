@@ -3,9 +3,10 @@ from apps.base.api import GeneralListApiView
 from rest_framework import generics, status, viewsets, permissions
 
 from apps.products.api.serializers.product_serializers import ProductSerializer
+from apps.users.authentication_mixings import Authentication
 
 #ViewSets Implementation
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(Authentication,viewsets.ModelViewSet):
     """
     Product End Point
     """

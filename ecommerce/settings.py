@@ -52,7 +52,7 @@ SWAGGER_SETTINGS = {
     }
 }
 
-TOKEN_EXPIRE_AFTER_SECONDS = 10
+TOKEN_EXPIRE_AFTER_SECONDS = 60*15
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
