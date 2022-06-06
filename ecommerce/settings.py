@@ -36,12 +36,14 @@ LOCAL_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
     'simple_history',
     'drf_yasg',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+# Swagger documentation https://drf-yasg.readthedocs.io/en/stable/readme.html
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION':{
         'basic':{
@@ -49,6 +51,9 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+TOKEN_EXPIRE_AFTER_SECONDS = 10
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
